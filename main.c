@@ -26,10 +26,17 @@ int main(int argc, char **argv)
     	{
 		printf("%s",prompt);
 		//fflush
-		//get input
+		char input [1024];
+		fgets(input, 1024, stdin);
 		int comcount = 1; 	//start at 1 because there is one more command than there are semicolons
-		//loop through input and count ;s
-		char * argc[count] = tokenify(count, 1) //the 1 indicates prompt, ie split on semicolons
+		int i = 0;
+		for(;input[i] != "\0"; i++)
+		{
+			if(input[i] == ";")
+				comcount++;
+
+		}
+		char * argc[comcount] = tokenify(input, comcount, 0) //the 0 indicates prompt, ie split on semicolons
 		for(size of argc)
 			if(mode == 0)
 				//sequential execution function
