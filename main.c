@@ -1,3 +1,7 @@
+// Willets Ely, Daniel Drucker, Markos Georges
+// 10/8/2013
+// Cosc 301
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
