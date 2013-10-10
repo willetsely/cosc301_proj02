@@ -13,6 +13,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <poll.h>
+#include <errno.h>
 #include <signal.h>
 
 
@@ -60,21 +61,21 @@ int main(int argc, char **argv)
     return 0;
 }
 
-int sequential(char *cmd, int mode)
+int sequential(char *line, int mode)
 {
-    char *cmd[] = tokenify(cmd, 1);
-    if (strcmp(cmd[0] == "mode") && mode != 3)
+    char *cmd[] = tokenify(line, 1);
+    if (strcmp(cmd[0], "mode") == 0 && mode != 3)
     {
-	if (cmd[2] != NULL)
-	{
-	    	printf("__________ERROR: Too many arguements for Command: Mode__________");
-	}
-	else		//Mode function is only called if there is a valid number of arguements
-	{
-           	mode = mode_func(cmd[1], mode);
-	}
+		if (cmd[2] != NULL)
+		{
+			printf("__________ERROR: Too many arguements for Command: Mode__________");
+		}
+		else		//Mode function is only called if there is a valid number of arguements
+		{
+			mode = mode_func(cmd[1], mode);
+		}
     }
-    if (strcmp(cmd[0] == "exit") && cmd[2] == NULL)
+    if (strcmp(cmd[0], "exit") == 0 && cmd[1] == NULL)
     {
         mode = 3;
     }
