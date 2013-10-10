@@ -2,18 +2,17 @@
 #include <stdlib.h>
 #include "tokenify.h"
 
-char *tokenify(const char *str, int size, int switch_value)
+char *tokenify_prompt(const char *str, int switch_value)
 {
     switch (switch_value)
     {
-	case 0:
-	    const char *sep = ";"; //switch_value == 0, tokenify separates command line by ';'
+	case 0:				//case 0 - tokenifies prompts by separating every semicolon
+	    char *sep = ";";
 	    break;
-	case 1:
-	    const char *sep = " \n\t"; //switch_value == 1, tokenify breaks up commands by spaces
+	case 1:				//case 1 - tokenifies commands by separating at any white space
+	    char *sep = " \n\t";
 	    break;
-    }
-    char *result = (char *)malloc(sizeof(char *) * size); 
+    char *result = (char *)malloc(sizeof(char *) * strlen(str)); 	//malloc's enough space for an array of pointers the size of the string to be parsed
     char *s = strdup(str);
     char *word, *temp;
     int i = 0;

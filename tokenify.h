@@ -1,7 +1,7 @@
-#ifndef __PROJ02_TOKENIFY_H__
-#define __PROJ02_TOKENIFY_H__
+#ifndef __TOKENIFY_H__
+#define __TOKENIFY_H__
 
 
-char *tokenify(const char *str, int size, int switch_value)
+char *tokenify(const char *str, int switch_value)
 
-#endif // __PROJ02_TOKENIFY_H__
+#endif // __TOKENIFY_H__
