@@ -8,7 +8,7 @@
 
 int sequential(char *cmd, int mode)
 {
-    char *cmd[] = tokenify(cmd, 1);
+    char *cmd[] = tokenify(cmd, 0);
     if (strcmp(cmd[0] == "mode") && mode != 3 && cmd[2] == NULL)
     {
         mode = mode_func(cmd[1], mode);
@@ -20,7 +20,11 @@ int sequential(char *cmd, int mode)
 
     int childrv;
     pid_t pid = fork();
-    if (pid == 0)
+    if (pid < 0)
+    {
+		perror("Error in the fork"); 
+	}
+	if (pid == 0)
     {
      /***  Run Child Process  ***/
         if (execv(cmd[0], cmd) < 0) {
@@ -28,7 +32,7 @@ int sequential(char *cmd, int mode)
         }
         printf("\n");
     } 
-    else if (pid > 0)
+    else
     {
      /***  Wait for Child Process to finish then run Parent ***/
         waitpid(pid, &childrv, 0);
@@ -37,27 +41,42 @@ int sequential(char *cmd, int mode)
 
 }
 
-int parallel(char *cmd)
+int parallel(char *cmds, int mode)
 {
-    char *cmd[] = tokenify(cmd, 1);
-
-    int childrv;
-    pid_t pid = fork();
-    if (pid == 0)
-    {
-     /***  Run Child Process  ***/
-        if (execv(cmd[0], cmd) < 0) {
-            fprintf(stderr, "execv failed: %s\n", strerror(errno));
-        }
-        printf("\n");
-    } 
-    else if (pid > 0)
-    {
-     /***  Wait for Child Process to finish then run Parent ***/
-        waitpid(pid, &childrv, 0);
-        printf("~~~~~~~~~~~Child Process Finished!~~~~~~~~~~~~\n");
-    }
-
+	char *commands[] = tokenify(cmd, 1);
+	int childrv;
+	
+	int i = 0
+	for (; i < sizeof(commands + 1) ; i++)
+	{
+		char *cmd[] = tokenify(cmd, 0);
+		if (strcmp(cmd[0] == "mode") && mode != 3 && cmd[2] == NULL)
+		{
+			mode = mode_func(cmd[1], mode);
+		}
+		if (strcmp(cmd[0] == "exit") && cmd[2] == NULL)
+		{
+			mode = 3;
+		}
+		
+		pid_t pids[i] = fork();
+		if (pid < 0)
+		{
+			perror("Error in the fork"); 
+		}
+		if (pid == 0)
+		{
+		 /***  Run Child Process  ***/
+			if (execv(cmd[0], cmd) < 0) {
+				fprintf(stderr, "execv failed: %s\n", strerror(errno));
+			}
+			printf("\n");
+		}
+	}
+	for (; i < sizeof(commands + 1) ; i++)
+	{
+		waitpid(pids[i], &childrv, 0);
+	}
 }
 
 
