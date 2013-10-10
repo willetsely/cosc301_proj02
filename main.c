@@ -66,7 +66,7 @@ int sequential(char *line, int mode)
     char *cmd[] = tokenify(line, 1);
     if (strcmp(cmd[0], "mode") == 0 && mode != 3)
     {
-<<<<<<< HEAD
+
 		if (cmd[2] != NULL)
 		{
 			printf("__________ERROR: Too many arguements for Command: Mode__________");
@@ -75,7 +75,7 @@ int sequential(char *line, int mode)
 		{
 			mode = mode_func(cmd[1], mode);
 		}
-=======
+
 	    if (cmd[2] != NULL)
 	    {
 	    	printf("__________ERROR: Too many arguements for Command: Mode__________");
@@ -84,7 +84,7 @@ int sequential(char *line, int mode)
 	    {
            	mode = mode_func(cmd[1], mode);
 	    }
->>>>>>> ed49aa3529576d7824eb66527eb8c4eceda4f459
+
     }
     if (strcmp(cmd[0], "exit") == 0 && cmd[1] == NULL)
     {
@@ -124,7 +124,8 @@ int parallel(char *line, int mode)
 	int i = 0;
 	while(commands[i] != NULL)
 	{
-		char *cmd[] = tokenify(commands, 1);
+		char *cmd[];
+        cmd = tokenify(commands, 1);
 		if (strcmp(cmd[0], "mode") == 0 && mode != 3)
 		{
 			if (cmd[2] != NULL)	//Built-in Command should only take one arguement
