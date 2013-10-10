@@ -65,14 +65,14 @@ int sequential(char *cmd, int mode)
     char *cmd[] = tokenify(cmd, 1);
     if (strcmp(cmd[0] == "mode") && mode != 3)
     {
-	if (cmd[2] != NULL)
-	{
+	    if (cmd[2] != NULL)
+	    {
 	    	printf("__________ERROR: Too many arguements for Command: Mode__________");
-	}
-	else		//Mode function is only called if there is a valid number of arguements
-	{
+	    }
+	    else		//Mode function is only called if there is a valid number of arguements
+	    {
            	mode = mode_func(cmd[1], mode);
-	}
+	    }
     }
     if (strcmp(cmd[0] == "exit") && cmd[2] == NULL)
     {
@@ -104,7 +104,8 @@ int sequential(char *cmd, int mode)
 
 int parallel(char *line, int mode)
 {
-    char **commands = tokenify(line, 0)
+    char **commands;
+    commands = tokenify(line, 0);
 	int childrv;
     pid_t *pids;
 
@@ -143,7 +144,7 @@ int parallel(char *line, int mode)
 		}
         i++;
     }
-    j = 0;
+    int j = 0;
     while(commands[j] != NULL)
 	{
 		waitpid(pids[j], &childrv, 0);
