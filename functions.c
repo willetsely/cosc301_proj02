@@ -97,10 +97,18 @@ char *tokenify(const char *str, int switch_value)
     int i = 0;
     for (word = strtok_r(s, sep, &temp); word != NULL; word = strtok_r(NULL, sep, &temp))
     {
-	if (word[0] == '#')
+	int j = 0;
+	for (;word[j] != NULL; j++)
 	{
-	    result[i] = NULL;
-	    return result;
+	    if (isalnum(word[j]) != 0 || (ispunct(word[j]) != 0 && word[j] != '#'))
+	    {
+		break;
+	    }
+	    if (word[j] == '#')
+	    {
+		result[i] = NULL;
+		return result;
+	    }
 	}
 	result[i] = word;
 	i++;
