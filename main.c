@@ -65,7 +65,7 @@ int main(int argc, char **argv)
 int sequential(char *line, int mode)
 {
     
-    char *cmd[sizeof(line)];
+    char **cmd;
     cmd = tokenify(line, 1);
     if (strcmp(cmd[0], "mode") == 0 && mode != 3)
     {
@@ -127,7 +127,7 @@ int parallel(char *line, int mode)
 	int i = 0;
 	while(commands[i] != NULL)
 	{
-		char *cmd[];
+		char **cmd;
         cmd = tokenify(commands, 1);
 		if (strcmp(cmd[0], "mode") == 0 && mode != 3)
 		{
