@@ -148,42 +148,37 @@ int parallel(char *cmds, int mode)
 }
 
 
-char *tokenify(const char *str, int switch_value)
+char **tokenify(const char *str, int switch_value)
 {
-    switch (switch_value)
-    {
-	case 0:				//case 0 - tokenifies prompts by separating every semicolon
-	    char *sep = ";";
-	    break;
-    case 1:				//case 1 - tokenifies commands by separating at any white space
-	    char *sep = " \n\t";
-	    break;
-    }
-    char *result = (char *)malloc(sizeof(char *) * strlen(str)); 	//malloc's enough space for an array of pointers the size of the string to be parsed
-    char *s = strdup(str);
-    char *word, *temp;
-    int i = 0;
-    for (word = strtok_r(s, sep, &temp); word != NULL; word = strtok_r(NULL, sep, &temp))
-    {
+	if (switch_value == 0)		//case 0 - tokenifies prompts by separating every semicolon
+	    	char *sep = ";";
+    	if (switch_value == 1)		//case 1 - tokenifies commands by separating at any white space
+	    	char *sep = " \n\t";
+    	char **result = (char *)malloc(sizeof(char *) * strlen(str)); 	//malloc's enough space for an array of pointers the size of the string to be parsed
+    	char *s = strdup(str);
+    	char *word, *temp;
+    	int i = 0;
+    	for (word = strtok_r(s, sep, &temp); word != NULL; word = strtok_r(NULL, sep, &temp))
+    	{
 		int j = 0;
 		for (;word[j] != NULL; j++)  	//tests for first instance of a '#'
 		{
 			if (isalnum(word[j]) != 0 || (ispunct(word[j]) != 0 && word[j] != '#'))
 			{
-			break;
+				break;
 			}
 			if (word[j] == '#')
 			{
-			result[i] = NULL;	//if it finds a '#' the index of result is given a NULL character
-			return result;		//and immediately returned
+				result[i] = NULL;	//if it finds a '#' the index of result is given a NULL character
+				return result;		//and immediately returned
 			}
 		}
 		result[i] = word;
 		i++;
-    }
-    result[i] = NULL;
-    free(s);
-    return result;
+    	}
+    	result[i] = NULL;
+    	free(s);
+    	return result;
 }
 
 
@@ -191,24 +186,19 @@ int mode_func(const char *command, int mode_type)
 {
 	if (command == NULL)
 	{
-		switch (mode_type)
-		{
-			case 0:		// 0 - indicates Sequential Mode
-			printf = "___________The shell is currently running in Sequential Mode__________\n";
-			break;
-			case 1:		// 1 - indicates Parallel Mode
-			printf = "___________The shell is currently running in Parallel Mode___________\n";
-			break;
-		}
-    }
-    if (strcmp(command, "p") == 0 || strcmp(command, "parallel") == 0) //allows for 'p' to act as a shortcut
+		if (mode_type == 0)		// 0 - indicates Sequential Mode
+			printf("___________The shell is currently running in Sequential Mode__________\n");
+		if (mode_type == 1)		// 1 - indicates Parallel Mode
+			printf("___________The shell is currently running in Parallel Mode___________\n");
+    	}
+    	if (strcmp(command, "p") == 0 || strcmp(command, "parallel") == 0) //allows for 'p' to act as a shortcut
 		mode_type = 1;
-    if (strcmp(command, "s") == 0 || strcmp(command, "sequential") == 0) //allows for 's' to act as a shortcut
+    	if (strcmp(command, "s") == 0 || strcmp(command, "sequential") == 0) //allows for 's' to act as a shortcut
 		mode_type = 0;
-    else
-    {
-		printf = "__________Not a valid arguement for Command: mode__________\n";
-    }
-    return mode_type;
+    	else
+    	{
+		printf("__________Not a valid arguement for Command: mode__________\n");
+    	}
+    	return mode_type;
 }
 
