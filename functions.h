@@ -4,10 +4,10 @@
 /* your list data structure declarations */
 
 /* your function declarations associated with the list */
-int sequential(char *cmd);
+int sequential(char *cmd, int mode);
 
 
-int parallel(char *cmd);
+int parallel(char *cmd, int mode);
 
 
 char *tokenify(const char *str, int switch_value);
