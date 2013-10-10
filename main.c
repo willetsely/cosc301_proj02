@@ -154,10 +154,11 @@ int parallel(char *line, int mode)
 
 char **tokenify(const char *str, int switch_value)
 {
+	const char *sep;
 	if (switch_value == 0)		//case 0 - tokenifies prompts by separating every semicolon
-	    	const char *sep = ";";
+	    	*sep = ";";
     	if (switch_value == 1)		//case 1 - tokenifies commands by separating at any white space
-	    	const char *sep = " \n\t";
+	    	*sep = " \n\t";
     	char **result = (char *)malloc(sizeof(char *) * strlen(str)); 	//malloc's enough space for an array of pointers the size of the string to be parsed
     	char *s = strdup(str);
     	char *word, *temp;
