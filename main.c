@@ -46,7 +46,7 @@ int main(int argc, char **argv)
 			int j = 0;
 			for(;j < comcount; j++)
 			{
-		        mode = sequential(commands[j], mode); //mode takes the value because sequential returns
+		        mode = sequential(commands[j], mode, comcount); //mode takes the value because sequential returns
                                                       // what mode should be for the next command line
 			}
 		}
@@ -63,7 +63,9 @@ int main(int argc, char **argv)
 
 int sequential(char *line, int mode)
 {
-    char *cmd[] = tokenify(line, 1);
+    
+    char *cmd[sizeof(line)];
+    cmd = tokenify(line, 1);
     if (strcmp(cmd[0], "mode") == 0 && mode != 3)
     {
 
@@ -143,11 +145,11 @@ int parallel(char *line, int mode)
 		}
 
 		pids[i] = fork();
-		if (pid < 0)
+		if (pids[i] < 0)
 		{
 			perror("Error in the fork"); 
 		}
-		if (pid == 0)
+		if (pids[i] == 0)
 		{
 		 /***  Run Child Process  ***/
 			if (execv(cmd[0], cmd) < 0) {
