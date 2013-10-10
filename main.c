@@ -14,10 +14,8 @@
 #include <sys/stat.h>
 #include <poll.h>
 #include <signal.h>
-#include "mode.h"
-#include "parallel.h"
-#include "sequential.h"
-#include "tokenify.h"
+#include "functions.h"
+
 
 int main(int argc, char **argv)
 {
