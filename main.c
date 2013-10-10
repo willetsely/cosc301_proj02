@@ -15,10 +15,7 @@
 #include <poll.h>
 #include <signal.h>
 #include "functions.h"
-<<<<<<< HEAD
 
-=======
->>>>>>> 282b5b12ddf5455609d63d681143f246ea88a377
 
 int main(int argc, char **argv)
 {
