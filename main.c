@@ -16,6 +16,7 @@
 #include <errno.h>
 #include <signal.h>
 
+char **tokenify(const char *, int);
 
 int main(int argc, char **argv)
 {
