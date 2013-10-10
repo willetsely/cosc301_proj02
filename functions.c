@@ -8,10 +8,17 @@
 
 int sequential(char *cmd, int mode)
 {
-    char *cmd[] = tokenify(cmd, 0);
-    if (strcmp(cmd[0] == "mode") && mode != 3 && cmd[2] == NULL)
+    char *cmd[] = tokenify(cmd, 1);
+    if (strcmp(cmd[0] == "mode") && mode != 3)
     {
-        mode = mode_func(cmd[1], mode);
+	if (cmd[2] != NULL)
+	{
+	    	printf("__________ERROR: Too many arguements for Command: Mode__________");
+	}
+	else		//Mode function is only called if there is a valid number of arguements
+	{
+           	mode = mode_func(cmd[1], mode);
+	}
     }
     if (strcmp(cmd[0] == "exit") && cmd[2] == NULL)
     {
@@ -31,7 +38,7 @@ int sequential(char *cmd, int mode)
             fprintf(stderr, "execv failed: %s\n", strerror(errno));
         }
         printf("\n");
-    } 
+    }
     else
     {
      /***  Wait for Child Process to finish then run Parent ***/
@@ -45,20 +52,27 @@ int parallel(char *cmds, int mode)
 {
 	char *commands[] = tokenify(cmd, 1);
 	int childrv;
-	
+
 	int i = 0
 	for (; i < sizeof(commands + 1) ; i++)
 	{
 		char *cmd[] = tokenify(cmd, 0);
-		if (strcmp(cmd[0] == "mode") && mode != 3 && cmd[2] == NULL)
+		if (strcmp(cmd[0] == "mode") && mode != 3)
 		{
-			mode = mode_func(cmd[1], mode);
+			if (cmd[2] != NULL)	//Built-in Command should only take one arguement
+			{
+				printf("_____________ERROR: Too many arguements for Command: Mode____________");
+			}
+			else		// mode function should not be called if the size of cmd is >2
+			{
+				mode = mode_func(cmd[1], mode);
+			}
 		}
 		if (strcmp(cmd[0] == "exit") && cmd[2] == NULL)
 		{
 			mode = 3;
 		}
-		
+
 		pid_t pids[i] = fork();
 		if (pid < 0)
 		{
@@ -98,7 +112,7 @@ char *tokenify(const char *str, int switch_value)
     for (word = strtok_r(s, sep, &temp); word != NULL; word = strtok_r(NULL, sep, &temp))
     {
 	int j = 0;
-	for (;word[j] != NULL; j++)
+	for (;word[j] != NULL; j++)  	//tests for first instance of a '#'
 	{
 	    if (isalnum(word[j]) != 0 || (ispunct(word[j]) != 0 && word[j] != '#'))
 	    {
@@ -106,8 +120,8 @@ char *tokenify(const char *str, int switch_value)
 	    }
 	    if (word[j] == '#')
 	    {
-		result[i] = NULL;
-		return result;
+		result[i] = NULL;	//if it finds a '#' the index of result is given a NULL character
+		return result;		//and immediately returned
 	    }
 	}
 	result[i] = word;
@@ -125,17 +139,17 @@ int mode_func(const char *command, int mode_type)
 	{
 		switch (mode_type)
 		{
-			case 0:
+			case 0:		// 0 - indicates Sequential Mode
 			printf = "___________The shell is currently running in Sequential Mode__________\n";
 			break;
-			case 1:
+			case 1:		// 1 - indicates Parallel Mode
 			printf = "___________The shell is currently running in Parallel Mode___________\n";
 			break;
 		}
     }
-    if (strcmp(command, "p") == 0 || strcmp(command, "parallel") == 0)
+    if (strcmp(command, "p") == 0 || strcmp(command, "parallel") == 0) //allows for 'p' to act as a shortcut
 		mode_type = 1;
-    if (strcmp(command, "s") == 0 || strcmp(command, "sequential") == 0)
+    if (strcmp(command, "s") == 0 || strcmp(command, "sequential") == 0) //allows for 's' to act as a shortcut
 		mode_type = 0;
     else
     {
