@@ -11,11 +11,11 @@
 int sequential(char *cmd, int mode)
 {
     char *cmd[] = tokenify(cmd, 1);
-    if (cmd[0] == "mode" && mode != 3 && cmd[2] == NULL)
+    if (strcmp(cmd[0] == "mode") && mode != 3 && cmd[2] == NULL)
     {
-        mode = mode(cmd[1], mode);
+        mode = mode_funct(cmd[1], mode);
     }
-    if (cmd[0] == "exit" && cmd[2] == NULL)
+    if (strcmp(cmd[0] == "exit") && cmd[2] == NULL)
     {
         mode = 3;
     }
