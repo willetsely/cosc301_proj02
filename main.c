@@ -13,6 +13,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <poll.h>
+#include <errno.h>
 #include <signal.h>
 
 char **tokenify(const char *, int);
@@ -61,21 +62,32 @@ int main(int argc, char **argv)
     return 0;
 }
 
-int sequential(char *cmd, int mode)
+int sequential(char *line, int mode)
 {
-    char *cmd[] = tokenify(cmd, 1);
-    if (strcmp(cmd[0] == "mode") && mode != 3)
+    char *cmd[] = tokenify(line, 1);
+    if (strcmp(cmd[0], "mode") == 0 && mode != 3)
     {
-	if (cmd[2] != NULL)
-	{
+
+		if (cmd[2] != NULL)
+		{
+			printf("__________ERROR: Too many arguements for Command: Mode__________");
+		}
+		else		//Mode function is only called if there is a valid number of arguements
+		{
+			mode = mode_func(cmd[1], mode);
+		}
+
+	    if (cmd[2] != NULL)
+	    {
 	    	printf("__________ERROR: Too many arguements for Command: Mode__________");
-	}
-	else		//Mode function is only called if there is a valid number of arguements
-	{
+	    }
+	    else		//Mode function is only called if there is a valid number of arguements
+	    {
            	mode = mode_func(cmd[1], mode);
-	}
+	    }
+
     }
-    if (strcmp(cmd[0] == "exit") && cmd[2] == NULL)
+    if (strcmp(cmd[0], "exit") == 0 && cmd[1] == NULL)
     {
         mode = 3;
     }
@@ -105,14 +117,16 @@ int sequential(char *cmd, int mode)
 
 int parallel(char *line, int mode)
 {
-    char **commands = tokenify(line, 0)
+    char **commands;
+    commands = tokenify(line, 0);
 	int childrv;
     pid_t *pids;
 
 	int i = 0;
 	while(commands[i] != NULL)
 	{
-		char *cmd[] = tokenify(commands, 1);
+		char *cmd[];
+        cmd = tokenify(commands, 1);
 		if (strcmp(cmd[0], "mode") == 0 && mode != 3)
 		{
 			if (cmd[2] != NULL)	//Built-in Command should only take one arguement
@@ -144,7 +158,7 @@ int parallel(char *line, int mode)
 		}
         i++;
     }
-    j = 0;
+    int j = 0;
     while(commands[j] != NULL)
 	{
 		waitpid(pids[j], &childrv, 0);
