@@ -101,7 +101,7 @@ char *tokenify(const char *str, int switch_value)
 	case 0:				//case 0 - tokenifies prompts by separating every semicolon
 	    char *sep = ";";
 	    break;
-        case 1:				//case 1 - tokenifies commands by separating at any white space
+    case 1:				//case 1 - tokenifies commands by separating at any white space
 	    char *sep = " \n\t";
 	    break;
     }
@@ -111,21 +111,21 @@ char *tokenify(const char *str, int switch_value)
     int i = 0;
     for (word = strtok_r(s, sep, &temp); word != NULL; word = strtok_r(NULL, sep, &temp))
     {
-	int j = 0;
-	for (;word[j] != NULL; j++)  	//tests for first instance of a '#'
-	{
-	    if (isalnum(word[j]) != 0 || (ispunct(word[j]) != 0 && word[j] != '#'))
-	    {
-		break;
-	    }
-	    if (word[j] == '#')
-	    {
-		result[i] = NULL;	//if it finds a '#' the index of result is given a NULL character
-		return result;		//and immediately returned
-	    }
-	}
-	result[i] = word;
-	i++;
+		int j = 0;
+		for (;word[j] != NULL; j++)  	//tests for first instance of a '#'
+		{
+			if (isalnum(word[j]) != 0 || (ispunct(word[j]) != 0 && word[j] != '#'))
+			{
+			break;
+			}
+			if (word[j] == '#')
+			{
+			result[i] = NULL;	//if it finds a '#' the index of result is given a NULL character
+			return result;		//and immediately returned
+			}
+		}
+		result[i] = word;
+		i++;
     }
     result[i] = NULL;
     free(s);
