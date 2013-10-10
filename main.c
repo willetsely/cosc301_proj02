@@ -38,9 +38,9 @@ int main(int argc, char **argv)
 				comcount++;
 		}
 
-		char * commands[comcount + 1];
-		*commands = tokenify(input, 0); //the 0 indicates prompt, ie split on semicolons
-        if(strcmp(*commands[0],"\n") == 0) //check for an empty line
+		char * commands[comcount+1];
+		commands = tokenify(input, 0); //the 0 indicates prompt, ie split on semicolons
+        if(strcmp(commands[0],"\n") == 0) //check for an empty line
             continue;        
 
 		if(mode == 0) //start sequential execution
@@ -48,7 +48,7 @@ int main(int argc, char **argv)
 			int j = 0;
 			for(;j < comcount; j++)
 			{
-		        mode = sequential(*commands[j], mode); //mode takes the value because sequential returns what mode should be for the next command line
+		        mode = sequential(commands[j], mode); //mode takes the value because sequential returns what mode should be for the next command line
 			}
 		}
 
