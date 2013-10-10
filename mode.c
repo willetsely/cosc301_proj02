@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <mode.h>
+#include "mode.h"
 
-int  mode_funct(const char *command, int mode_type)
+int mode_funct(const char *command, int mode_type)
 {
    if (command == NULL)
    {
