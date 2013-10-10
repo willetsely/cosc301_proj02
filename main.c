@@ -47,14 +47,14 @@ int main(int argc, char **argv)
 			int j = 0;
 			for(;j < comcount; j++)
 			{
-		        mode = sequential(commands[j], mode, comcount); //mode takes the value because sequential returns
-                                                      // what mode should be for the next command line
+		        mode = sequential(commands[j], mode, comcount); //mode takes the value because sequential
+                                                // returns what mode should be for the next command line
 			}
 		}
 
-		else if(mode == 1) //start parallel execution
-			//parallel execution function
-
+		else if(mode == 1){ //start parallel execution
+			mode = parallel(input, mode);
+        }
         if(mode == 3) //if an exit command has been issued, return
             return 0;
 	}
@@ -114,7 +114,7 @@ int sequential(char *line, int mode)
         waitpid(pid, &childrv, 0);
         printf("~~~~~~~~~~~Child Process Finished!~~~~~~~~~~~~\n");
     }
-
+    return mode;
 }
 
 int parallel(char *line, int mode)
@@ -166,6 +166,7 @@ int parallel(char *line, int mode)
 		waitpid(pids[j], &childrv, 0);
         j++;
 	}
+    return mode;
 }
 
 
