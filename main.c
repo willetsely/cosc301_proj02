@@ -14,7 +14,10 @@
 #include <sys/stat.h>
 #include <poll.h>
 #include <signal.h>
-
+#include "mode.h"
+#include "parallel.h"
+#include "sequential.h"
+#include "tokenify.h"
 
 int main(int argc, char **argv)
 {
@@ -37,14 +40,16 @@ int main(int argc, char **argv)
 				comcount++;
 		}
 
-		char * argc[comcount] = tokenify(input, 0)//the 0 indicates prompt, ie split on semicolons
+		char * argc[comcount+1] = tokenify(input, 0); //the 0 indicates prompt, ie split on semicolons
+        if(strcmp(*argc[0],"\n") == 0) //check for an empty line
+            continue;        
 
 		if(mode == 0) //start sequential execution
 		{
 			int j = 0;
 			for(;j < comcount; j++)
 			{
-		        mode = sequential(*argc[j], mode) //mode is set equal because sequential returns what mode should be for the next command line
+		        mode = sequential(*argc[j], mode); //mode takes the value because sequential returns what mode should be for the next command line
 			}
 		}
 
