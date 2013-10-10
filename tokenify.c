@@ -1,49 +1,32 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "list.h"
+#include "tokenify.h"
 
-char *tokenify(const char *str, int size, int switch_value)
+char *tokenify_prompt(const char *str, int switch_value)
 {
     switch (switch_value)
     {
-	case 0:
-	    const char *sep = ";"; //switch_value == 0, tokenify separates command line by ';'
+	case 0:				//case 0 - tokenifies prompts by separating every semicolon
+	    char *sep = ";";
 	    break;
-	case 1:
-	    const char *sep = " \n\t"; //switch_value == 1, tokenify breaks up commands by spaces
+	case 1:				//case 1 - tokenifies commands by separating at any white space
+	    char *sep = " \n\t";
 	    break;
-    }
-    char *result = 
+    char *result = (char *)malloc(sizeof(char *) * strlen(str)); 	//malloc's enough space for an array of pointers the size of the string to be parsed
     char *s = strdup(str);
     char *word, *temp;
+    int i = 0;
     for (word = strtok_r(s, sep, &temp); word != NULL; word = strtok_r(NULL, sep, &temp))
     {
-	if (word == '#')
-	    return;
-	int integer = 1;
-	int i = 0;
-	int number;
-	int number_check = 0;
-	while (integer)
+	if (word[0] == '#')
 	{
-	    if ( i == 0 && word[i] == '-')
-		i++;
-	    if (isdigit(word[i]) == 0)
-	        integer = 0;
-	    else
-	    {
-	        i++;
-		if (word[i] = '\0')
-		{
-		    number = atoi(word);
-		    number_check = 1;
-		    integer = 0;
-		}
-	    }
+	    result[i] = NULL;
+	    return result;
 	}
-	if (number_check == 1) 
-	    sorted_insert(number, *head);
+	result[i] = word;
+	i++;
     }
+    result[i] = NULL;
     free(s);
-    return;
+    return result;
 }
