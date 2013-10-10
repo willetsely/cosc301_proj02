@@ -155,7 +155,7 @@ int parallel(char *line, int mode)
 
 char **tokenify(const char *str, int switch_value)
 {
-	const char *sep;
+	char *sep;
 	if (switch_value == 0)		//case 0 - tokenifies prompts by separating every semicolon
 	    	*sep = ";";
     	if (switch_value == 1)		//case 1 - tokenifies commands by separating at any white space
