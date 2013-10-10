@@ -16,9 +16,9 @@ int  mode_funct(const char *command, int mode_type)
 		break;
 	}
     }
-    if (command == 'p' || command == 'parallel')
+    if (strcmp(command, "p") == 0 || strcmp(command, "parallel") == 0)
 	mode_type = 1;
-    if (command == 's' || command == 'sequential')
+    if (strcmp(command, "s") == 0 || strcmp(command, "sequential") == 0)
 	mode_type = 0;
     else
     {
