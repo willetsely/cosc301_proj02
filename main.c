@@ -102,16 +102,17 @@ int sequential(char *cmd, int mode)
 
 }
 
-int parallel(char *cmds, int mode)
+int parallel(char *line, int mode)
 {
-	char *commands[] = tokenify(cmd, 1);
+    char **commands = tokenify(line, 0)
 	int childrv;
+    pid_t *pids;
 
-	int i = 0
-	for (; i < sizeof(commands + 1) ; i++)
+	int i = 0;
+	while(commands[i] != NULL)
 	{
-		char *cmd[] = tokenify(cmd, 0);
-		if (strcmp(cmd[0] == "mode") && mode != 3)
+		char *cmd[] = tokenify(commands, 1);
+		if (strcmp(cmd[0], "mode") == 0 && mode != 3)
 		{
 			if (cmd[2] != NULL)	//Built-in Command should only take one arguement
 			{
@@ -122,12 +123,12 @@ int parallel(char *cmds, int mode)
 				mode = mode_func(cmd[1], mode);
 			}
 		}
-		if (strcmp(cmd[0] == "exit") && cmd[2] == NULL)
+		if (strcmp(cmd[0], "exit") == 0 && cmd[1] == NULL)
 		{
 			mode = 3;
 		}
 
-		pid_t pids[i] = fork();
+		pids[i] = fork();
 		if (pid < 0)
 		{
 			perror("Error in the fork"); 
@@ -140,10 +141,13 @@ int parallel(char *cmds, int mode)
 			}
 			printf("\n");
 		}
-	}
-	for (; i < sizeof(commands + 1) ; i++)
+        i++;
+    }
+    j = 0;
+    while(commands[j] != NULL)
 	{
-		waitpid(pids[i], &childrv, 0);
+		waitpid(pids[j], &childrv, 0);
+        j++;
 	}
 }
 
