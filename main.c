@@ -24,10 +24,11 @@ int main(int argc, char **argv)
 	int mode = 0;	//mode = 0 for sequential, 1 for parallel, 3 to exit
     char input [1024];    
 
+    printf("%s", prompt);
+    fflush(stdout);
+
 	while(fgets(input, 1024, stdin) != NULL)  //keep looping while there is still input
-    	{
-		printf("%s",prompt);
-		fflush(stdout);	
+    	{	
 
 		int comcount = 1; //start at 1 because there is one more command than there are semicolons
 		int i = 0;
@@ -57,8 +58,11 @@ int main(int argc, char **argv)
         }
         if(mode == 3) //if an exit command has been issued, return
             return 0;
-	}
 
+        printf("%s",prompt);
+        fflush(stdout);
+	}
+    
     return 0;
 }
 
