@@ -192,12 +192,12 @@ char **tokenify(const char *str, int switch_value)
 		{
 			if (isalnum(word[j]) != 0 || (ispunct(word[j]) != 0 && word[j] != '#'))
 			{
-				break;
-			}
+				break;		//if the index is not a white space or a '#',
+			}			//it breaks out of the test for loop
 			if (word[j] == '#')
 			{
 				result[i] = NULL;	//if it finds a '#' the index of result is given a NULL character
-				return result;		//and immediately returned
+				return result;		//and immediately return it
 			}
 		}
 		result[i] = word;
