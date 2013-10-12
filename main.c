@@ -138,7 +138,7 @@ int parallel(char *line, int mode)
 		{
 			if (cmd[2] != NULL)	//Built-in Command should only take one arguement
 			{
-				printf("_____________ERROR: Too many arguements for Command: Mode____________");
+				printf("_____________ERROR: Too many arguements for Command: Mode____________\n");
 			}
 			else		// mode function should not be called if the size of cmd is >2
 			{
