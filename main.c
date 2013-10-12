@@ -182,7 +182,7 @@ char **tokenify(const char *str, int switch_value)
 	    	sep = " \n\t";
     	char **result = (char **)malloc(sizeof(char **));
     	char *s = strdup(str);
-	char comment = '#';
+	char *comment = "#";
 	char *comment_check = strtok(s, comment); 	//nothing after the '#' is considered
     	char *word, *temp;
     	int i = 0;
