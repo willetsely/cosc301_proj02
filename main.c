@@ -90,11 +90,13 @@ int sequential(char *line, int mode)
 		else		//Mode function is only called if there is a valid number of arguements
 		{
 			mode = mode_func(cmd[1], mode);
+            return mode;
 		}
     }
     if (strcmp(cmd[0], "exit") == 0 && cmd[1] == NULL)
     {
         mode = 3;
+        return mode;
     }
 
     int childrv;
@@ -178,29 +180,25 @@ char **tokenify(const char *str, int switch_value)
 	char *sep;
 	if (switch_value == 0)		//case 0 - tokenifies prompts by separating every semicolon
 	    	sep = ";";
-    	if (switch_value == 1)		//case 1 - tokenifies commands by separating at any white space
+  	if (switch_value == 1)		//case 1 - tokenifies commands by separating at any white space
 	    	sep = " \n\t";
-    	char **result = (char **)malloc(sizeof(char **));
-    	char *s = strdup(str);
-<<<<<<< HEAD
-	char *comment = "#";
-	char *comment_check = strtok(s, comment); 	//nothing after the '#' is considered
-    	char *word, *temp;
-=======
+   	char **result = (char **)malloc(sizeof(char **));
+   	char *s = strdup(str);
+
 	char *word, *temp;
 	char *comment = "#";
-	char *comment_check = strtok_r(s, comment, &temp); 	//nothing after the '#' is considered
->>>>>>> 3ab14bc6cc146219d3cd1ad44cfade178e64c602
-    	int i = 0;
-    	for (word = strtok_r(comment_check, sep, &temp); word != NULL; word = strtok_r(NULL, sep, &temp))
+	s = strtok_r(s, comment, &temp); 	//nothing after the '#' is considered
+
+   	int i = 0;
+   	for (word = strtok_r(s, sep, &temp); word != NULL; word = strtok_r(NULL, sep, &temp))
     	{
-		result[i] = word;
-		i++;
+    		result[i] = strdup(word);
+	    	i++;
     	}
-    	result[i] = NULL;
-    	free(s);
-	free(comment_check);
-    	return result;
+    result[i] = NULL;
+    free(s);
+	//free(comment_check);
+    return result;
 }
 
 
@@ -209,18 +207,30 @@ int mode_func(const char *command, int mode_type)
 	if (command == NULL)
 	{
 		if (mode_type == 0)		// 0 - indicates Sequential Mode
-			printf("___________The shell is currently running in Sequential Mode__________\n");
+		{
+            printf("___________The shell is currently running in Sequential Mode__________\n");
+            return mode_type;
+        }
 		if (mode_type == 1)		// 1 - indicates Parallel Mode
-			printf("___________The shell is currently running in Parallel Mode___________\n");
-    	}
-    	if (strcmp(command, "p") == 0 || strcmp(command, "parallel") == 0) //allows for 'p' to act as a shortcut
-		mode_type = 1;
-    	if (strcmp(command, "s") == 0 || strcmp(command, "sequential") == 0) //allows for 's' to act as a shortcut
-		mode_type = 0;
-    	else
-    	{
+		{	
+            printf("___________The shell is currently running in Parallel Mode___________\n");
+            return mode_type;
+        }
+    }
+   	if (strcmp(command, "p") == 0 || strcmp(command, "parallel") == 0) //allows for 'p' to act as a shortcut
+    {
+    	mode_type = 1;
+        return mode_type;
+    }
+   	if (strcmp(command, "s") == 0 || strcmp(command, "sequential") == 0) //allows for 's' to act as a shortcut
+	{
+    	mode_type = 0;
+        return mode_type;
+    }
+    else
+    {
 		printf("__________Not a valid arguement for Command: mode__________\n");
-    	}
-    	return mode_type;
+    }
+    return mode_type;
 }
 
