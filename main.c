@@ -22,7 +22,7 @@ int main(int argc, char **argv)
 {
 	const char * prompt = ">>>";
 	int mode = 0;	//mode = 0 for sequential, 1 for parallel, 3 to exit
-    char input [1024];    
+    char input [1024];     
 
     printf("%s", prompt);
     fflush(stdout);
@@ -42,8 +42,9 @@ int main(int argc, char **argv)
                 break;
             }
 		}
+        char * goodinput = strdup(input);
 
-		char ** commands;
+		char ** commands = (char **)malloc(sizeof(char**));
 		commands = tokenify(input, 0); //the 0 indicates prompt, ie split on semicolons
         if(strcmp(commands[0],"\n") == 0) //check for an empty line
             continue;        
@@ -53,13 +54,13 @@ int main(int argc, char **argv)
 			int j = 0;
 			for(;j < comcount; j++)
 			{
-		        mode = sequential(commands[j], mode, comcount); //mode takes the value because sequential
+		        mode = sequential(commands[j], mode); //mode takes the value because sequential
                                                 // returns what mode should be for the next command line
 			}
 		}
 
 		else if(mode == 1){ //start parallel execution
-			mode = parallel(input, mode);
+			mode = parallel(goodinput, mode);
         }
         if(mode == 3) //if an exit command has been issued, return
             return 0;
@@ -87,16 +88,6 @@ int sequential(char *line, int mode)
 		{
 			mode = mode_func(cmd[1], mode);
 		}
-
-	    if (cmd[2] != NULL)
-	    {
-	    	printf("__________ERROR: Too many arguements for Command: Mode__________");
-	    }
-	    else		//Mode function is only called if there is a valid number of arguements
-	    {
-           	mode = mode_func(cmd[1], mode);
-	    }
-
     }
     if (strcmp(cmd[0], "exit") == 0 && cmd[1] == NULL)
     {
