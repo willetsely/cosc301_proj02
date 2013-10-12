@@ -36,6 +36,11 @@ int main(int argc, char **argv)
 		{
 			if(input[i] == ';')
 				comcount++;
+            if(input[i] == '\n')
+            {
+                input[i] = '\0';
+                break;
+            }
 		}
 
 		char ** commands;
@@ -124,7 +129,7 @@ int sequential(char *line, int mode)
 int parallel(char *line, int mode)
 {
     char **commands;
-    commands = tokenify(line, 0);
+    commands = tokenify(line, 0);   //break the line into commands by separating at ;s
 	int childrv;
     pid_t *pids;
 
@@ -132,7 +137,7 @@ int parallel(char *line, int mode)
 	while(commands[i] != NULL)
 	{
 		char **cmd;
-        cmd = tokenify(commands, 1);
+        cmd = tokenify(commands[i], 1); //cmd = the array of strings that make up each command
 		if (strcmp(cmd[0], "mode") == 0 && mode != 3)
 		{
 			if (cmd[2] != NULL)	//Built-in Command should only take one arguement
