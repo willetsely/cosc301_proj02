@@ -16,6 +16,9 @@
 #include <errno.h>
 #include <signal.h>
 
+int sequential(char *, int);
+int parallel(char *, int);
+int mode_func(const char *, int);
 char **tokenify(const char *, int);
 
 int main(int argc, char **argv)
@@ -53,7 +56,7 @@ int main(int argc, char **argv)
 			int j = 0;
 			for(;j < comcount; j++)
 			{
-		        mode = sequential(commands[j], mode, comcount); //mode takes the value because sequential
+		        mode = sequential(commands[j], mode); //mode takes the value because sequential
                                                 // returns what mode should be for the next command line
 			}
 		}
@@ -193,7 +196,7 @@ char **tokenify(const char *str, int switch_value)
     	for (word = strtok_r(s, sep, &temp); word != NULL; word = strtok_r(NULL, sep, &temp))
     	{
 		int j = 0;
-		for (;word[j] != NULL; j++)  	//tests for first instance of a '#'
+		for (;word[j] != '\0'; j++)  	//tests for first instance of a '#'
 		{
 			if (isalnum(word[j]) != 0 || (ispunct(word[j]) != 0 && word[j] != '#'))
 			{
