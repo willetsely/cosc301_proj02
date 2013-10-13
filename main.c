@@ -180,30 +180,20 @@ char **tokenify(const char *str, int switch_value)
 	    	sep = ";";
     	if (switch_value == 1)		//case 1 - tokenifies commands by separating at any white space
 	    	sep = " \n\t";
-    	char **result = (char *)malloc(sizeof(char *) * strlen(str)); 	//malloc's enough space for an array of pointers the size of the string to be parsed
+    	char **result = (char **)malloc(sizeof(char **));
     	char *s = strdup(str);
+	char comment = '#';
+	char *comment_check = strtok(s, comment); 	//nothing after the '#' is considered
     	char *word, *temp;
     	int i = 0;
-    	for (word = strtok_r(s, sep, &temp); word != NULL; word = strtok_r(NULL, sep, &temp))
+    	for (word = strtok_r(comment_check, sep, &temp); word != NULL; word = strtok_r(NULL, sep, &temp))
     	{
-		int j = 0;
-		for (;word[j] != '\0'; j++)  	//tests for first instance of a '#'
-		{
-			if (isalnum(word[j]) != 0 || (ispunct(word[j]) != 0 && word[j] != '#'))
-			{
-				break;		//if the index is not a white space or a '#',
-			}			//it breaks out of the test for loop
-			if (word[j] == '#')
-			{
-				result[i] = NULL;	//if it finds a '#' the index of result is given a NULL character
-				return result;		//and immediately return it
-			}
-		}
 		result[i] = word;
 		i++;
     	}
     	result[i] = NULL;
     	free(s);
+	free(comment_check);
     	return result;
 }
 
