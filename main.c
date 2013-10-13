@@ -70,8 +70,8 @@ int main(int argc, char **argv)
 
         printf("%s",prompt);
         fflush(stdout);
-	}
-    
+	free(goodinput);
+    }
     return 0;
 }
 
@@ -83,7 +83,7 @@ int sequential(char *line, int mode)
     if (strcmp(cmd[0], "mode") == 0 && mode != 3)
     {
 
-		if (cmd[2] != NULL)
+		if (cmd[1] != NULL && cmd[2] != NULL)
 		{
 			printf("__________ERROR: Too many arguements for Command: Mode__________");
 		}
@@ -127,7 +127,8 @@ int parallel(char *line, int mode)
     char **commands;
     commands = tokenify(line, 0);   //break the line into commands by separating at ;s
 	int childrv;
-    pid_t *pids;
+    pid_t pids[sizeof(line)];
+    int pidcount = 0;
 
 	int i = 0;
 	while(commands[i] != NULL)
@@ -136,7 +137,7 @@ int parallel(char *line, int mode)
         cmd = tokenify(commands[i], 1); //cmd = the array of strings that make up each command
 		if (strcmp(cmd[0], "mode") == 0 && mode != 3)
 		{
-			if (cmd[2] != NULL)	//Built-in Command should only take one arguement
+			if (cmd[1] != NULL && cmd[2] != NULL)	//Built-in Command should only take one arguement
 			{
 				printf("_____________ERROR: Too many arguements for Command: Mode____________\n");
 			}
@@ -145,28 +146,32 @@ int parallel(char *line, int mode)
 				mode = mode_func(cmd[1], mode);
 			}
 		}
-		if (strcmp(cmd[0], "exit") == 0 && cmd[1] == NULL)
+		else if (strcmp(cmd[0], "exit") == 0 && cmd[1] == NULL)
 		{
 			mode = 3;
 		}
 
-		pids[i] = fork();
-		if (pids[i] < 0)
-		{
-			perror("Error in the fork"); 
-		}
-		if (pids[i] == 0)
-		{
-		 /***  Run Child Process  ***/
-			if (execv(cmd[0], cmd) < 0) {
-				fprintf(stderr, "execv failed: %s\n", strerror(errno));
-			}
-			printf("\n");
-		}
-        i++;
+        else
+        {
+		    pids[pidcount] = fork();
+		    if (pids[i] < 0)
+		    {
+			    perror("Error in the fork"); 
+		    }
+		    if (pids[pidcount] == 0)
+		    {
+		    /***  Run Child Process  ***/
+			    if (execv(cmd[0], cmd) < 0) {
+				    fprintf(stderr, "execv failed: %s\n", strerror(errno));
+			    }
+			    printf("\n");
+		    }
+            pidcount++;
+        }
+    i++;
     }
     int j = 0;
-    while(commands[j] != NULL)
+    while(pids[j] < pidcount)
 	{
 		waitpid(pids[j], &childrv, 0);
         j++;
@@ -196,7 +201,7 @@ char **tokenify(const char *str, int switch_value)
 	    	i++;
     	}
     result[i] = NULL;
-    free(s);
+    //free(s);
 	//free(comment_check);
     return result;
 }
